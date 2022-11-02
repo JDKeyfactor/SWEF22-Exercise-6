@@ -41,7 +41,7 @@
 int branchCount = 17;
 
 // Two-sum function using a nested loop
-// Cyclomatic complexity = ___
+// Cyclomatic complexity = 2
 // Runtime (big-O) complexity = O(n^2)
 result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
@@ -55,7 +55,7 @@ result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TE
 }
 
 // Two-sum function using a sorted list
-// Cyclomatic complexity = ___
+// Cyclomatic complexity = 2
 // Runtime (big-O) complexity = O(n)
 result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     std::sort(elements.begin(), elements.end());
@@ -65,6 +65,7 @@ result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TE
         bool exists = std::binary_search(elements.begin(), elements.end(), diff);
         if (exists) { TESTBRANCH
             int diffIndex = std::find(elements.begin(), elements.end(), diff) - elements.begin();
+            r.possible = true;
             r.first = i;
             r.second = diffIndex;
             return r;
@@ -74,7 +75,7 @@ result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TE
 }
 
 // Two-sum function using a hash table
-// Cyclomatic complexity = ___
+// Cyclomatic complexity = 2
 // Runtime (big-O) complexity = O(n)
 result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     std::unordered_map<int, int> elementMap = std::unordered_map<int, int>(target);
@@ -106,25 +107,26 @@ result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TE
 
 TESTCASE(t1, test1)
 void test1() {
-    target = 0;
-    arr = {0,0};
+    target = 1;
+    arr = {1,0};
     expected = true;
     RUNTEST();
 }
 TESTCASE(t2, test2)
-void test2() {
-    target = 7;
-    arr = {3,4};
-    expected = true;
-    RUNTEST();
-}
-TESTCASE(t3, test3)
-void test3() {
-    target = 6;
-    arr = {3,3};
-    expected = true;
-    RUNTEST();
-}
+ void test2() {
+     target = 31;
+     arr = {12, 18};
+     expected = false;
+     RUNTEST();
+ }
+
+ TESTCASE(t3, test3)
+ void test3() {
+     target = 8;
+     arr = {1,2,3,4,5};
+     expected = true;
+     RUNTEST();
+ }
 // Main function area
 /*************************************************/
 /* Main function to run tests and print (branch) */ 
