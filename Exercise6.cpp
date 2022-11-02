@@ -38,7 +38,7 @@
 /* match the number of TESTBRANCH statements.    */
 /*************************************************/
 
-int branchCount = 17;
+int branchCount = 21;
 
 // Two-sum function using a nested loop
 // Cyclomatic complexity = _4__
