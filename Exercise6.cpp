@@ -1,6 +1,6 @@
 #include "Exercise6.h"
  
-// Student name: _____________________
+// Student name: Jason Kotowski
 
 // Exercise directions
 /****************************************************/
