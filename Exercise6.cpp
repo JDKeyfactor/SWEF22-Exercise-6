@@ -41,8 +41,8 @@
 int branchCount = 17;
 
 // Two-sum function using a nested loop
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Cyclomatic complexity = 3
+// Runtime (big-O) complexity = O(n^2)
 result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
         for (int j = 0; j < elements.size(); j++) { TESTBRANCH
@@ -55,8 +55,8 @@ result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TE
 }
 
 // Two-sum function using a sorted list
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Cyclomatic complexity = 2
+// Runtime (big-O) complexity = O(nlog(n))
 result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     std::sort(elements.begin(), elements.end());
     result r = result{};
@@ -74,8 +74,8 @@ result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TE
 }
 
 // Two-sum function using a hash table
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Cyclomatic complexity = 2
+// Runtime (big-O) complexity = O(n)
 result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     std::unordered_map<int, int> elementMap = std::unordered_map<int, int>(target);
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
