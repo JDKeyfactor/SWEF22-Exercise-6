@@ -108,7 +108,31 @@ result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TE
 TESTCASE(t1, test1)
 void test1() {
     target = 0;
-    arr = {0, 0, 0};
+    arr = {0, 0};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t2, test2)
+void test2() {
+    target = 0;
+    arr = {1, 2};
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t3, test3)
+void test3() {
+    target = 20;
+    arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t4, test4)
+void test4() {
+    target = 21;
+    arr = {2, 3, 5, 8, 13};
     expected = true;
     RUNTEST();
 }
