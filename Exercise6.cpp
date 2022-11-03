@@ -62,9 +62,9 @@ result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TE
     result r = result{};
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
         int diff = target - elements[i];
-        bool exists = std::binary_search(elements.begin(), elements.end(), diff);
+        bool exists = std::binary_search(elements.begin() + i + 1, elements.end(), diff);
         if (exists) { TESTBRANCH
-            int diffIndex = std::find(elements.begin(), elements.end(), diff) - elements.begin();
+            int diffIndex = std::find(elements.begin() + i + 1, elements.end(), diff) - elements.begin();
             r.first = i;
             r.second = diffIndex;
             r.possible = true;
