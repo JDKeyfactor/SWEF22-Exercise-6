@@ -1,6 +1,6 @@
 #include "Exercise6.h"
  
-// Student name: _____________________
+// Student name: Shubh Patel
 
 // Exercise directions
 /****************************************************/
@@ -38,15 +38,16 @@
 /* match the number of TESTBRANCH statements.    */
 /*************************************************/
 
-int branchCount = 17;
+int branchCount = 19;
 
 // Two-sum function using a nested loop
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Cyclomatic complexity = 4 for unfixed code or 5 for fixed code
+// Runtime (big-O) complexity = O(n^2)
 result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
         for (int j = 0; j < elements.size(); j++) { TESTBRANCH
-            if (elements[i] + elements[j] == target) { TESTBRANCH
+            //Added (i != j) to the if statement to fix code to check if indexed are the same
+            if (elements[i] + elements[j] == target && i != j) { TESTBRANCH
                 return result{ true, i, j};
             } TESTBRANCH
         } TESTBRANCH
@@ -55,8 +56,8 @@ result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TE
 }
 
 // Two-sum function using a sorted list
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Cyclomatic complexity = 2 for unfixed code, 3 for fixed code
+// Runtime (big-O) complexity = O(n)
 result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     std::sort(elements.begin(), elements.end());
     result r = result{};
@@ -65,17 +66,22 @@ result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TE
         bool exists = std::binary_search(elements.begin(), elements.end(), diff);
         if (exists) { TESTBRANCH
             int diffIndex = std::find(elements.begin(), elements.end(), diff) - elements.begin();
-            r.first = i;
-            r.second = diffIndex;
-            return r;
+            //Added a if statement to check if the indexes are the same
+            //for the values
+            if (diffIndex != i) { TESTBRANCH
+                r.first = i;
+                r.second = diffIndex;
+                r.possible = true; //Added this to fix code which lets program know a match is found
+                return r;
+            } TESTBRANCH
         } TESTBRANCH
     } TESTBRANCH
     return result{};
 }
 
 // Two-sum function using a hash table
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Cyclomatic complexity = 4
+// Runtime (big-O) complexity = O(n)
 result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     std::unordered_map<int, int> elementMap = std::unordered_map<int, int>(target);
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
@@ -104,11 +110,50 @@ result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TE
 /* case.                                            */
 /****************************************************/
 
+/*
+Bug List:
+1. Naive test did not check if indexes were same for values.
+2. Sort test did not check if indexes were same for values.
+3. Sort test did not set the .possible value to true.
+*/
+
 TESTCASE(t1, test1)
 void test1() {
     target = 0;
     arr = {0,0};
     expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t2, test2)
+void test2() {
+    target = 8;
+    arr = {1,3,5,7};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t3, test3)
+void test3() {
+    target = 13;
+    arr = {2,4,7,6};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t4, test4)
+void test4() {
+    target = 13;
+    arr = {0,0};
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t5, test5)
+void test5() {
+    target = 7;
+    arr = {1,0,3};
+    expected = false;
     RUNTEST();
 }
 
