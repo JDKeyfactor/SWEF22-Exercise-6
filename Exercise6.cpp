@@ -1,6 +1,6 @@
 #include "Exercise6.h"
- 
-// Student name: _____________________
+
+// Student name: _Zifeng Yuan___________
 
 // Exercise directions
 /****************************************************/
@@ -38,16 +38,18 @@
 /* match the number of TESTBRANCH statements.    */
 /*************************************************/
 
-int branchCount = 17;
+int branchCount = 21;
 
 // Two-sum function using a nested loop
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Cyclomatic complexity = _4_
+// Runtime (big-O) complexity = _n^2_
 result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
         for (int j = 0; j < elements.size(); j++) { TESTBRANCH
-            if (elements[i] + elements[j] == target) { TESTBRANCH
-                return result{ true, i, j};
+            if (i != j) { TESTBRANCH
+                if (elements[i] + elements[j] == target) { TESTBRANCH
+                        return result{ true, i, j };
+                } TESTBRANCH
             } TESTBRANCH
         } TESTBRANCH
     } TESTBRANCH
@@ -55,18 +57,28 @@ result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TE
 }
 
 // Two-sum function using a sorted list
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Cyclomatic complexity = _3_
+// Runtime (big-O) complexity = _nlogn_
 result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
+    std::vector<unsigned int> original(elements);
     std::sort(elements.begin(), elements.end());
     result r = result{};
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
         int diff = target - elements[i];
-        bool exists = std::binary_search(elements.begin(), elements.end(), diff);
+        bool exists = std::binary_search(elements.begin()+i+1, elements.end(), diff);
         if (exists) { TESTBRANCH
-            int diffIndex = std::find(elements.begin(), elements.end(), diff) - elements.begin();
-            r.first = i;
-            r.second = diffIndex;
+            int originalFirst = std::find(original.begin(), original.end(), elements[i]) - original.begin();
+            original.erase(original.begin() + originalFirst);
+
+            int originalSecond = std::find(original.begin(), original.end(), diff) - original.begin();
+
+            if (originalSecond >= originalFirst) { TESTBRANCH
+                originalSecond++;
+            } TESTBRANCH
+
+            r.first = originalFirst;
+            r.second = originalSecond;
+            r.possible = true;
             return r;
         } TESTBRANCH
     } TESTBRANCH
@@ -74,8 +86,8 @@ result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TE
 }
 
 // Two-sum function using a hash table
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Cyclomatic complexity = _2_
+// Runtime (big-O) complexity = _n_
 result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     std::unordered_map<int, int> elementMap = std::unordered_map<int, int>(target);
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
@@ -112,9 +124,105 @@ void test1() {
     RUNTEST();
 }
 
+TESTCASE(t2, test2)
+void test2() {
+    target = 2;
+    arr = {1,1};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t3, test3)
+void test3() {
+    target = 1;
+    arr = { 1,1 };
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t4, test4)
+void test4() {
+    target = 5;
+    arr = {2,3};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t5, test5)
+void test5() {
+    target = 4;
+    arr = { 2,3 };
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t6, test6)
+void test6() {
+    target = 10;
+    arr = { 1,1,2,3,4,5,6,7,8,9,0 };
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t7, test7)
+void test7() {
+    target = 10;
+    arr = { 1,1,2,3,4 };
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t8, test8)
+void test8() {
+    target = 10;
+    arr = { 9,7,4,8,3,0,2,1,5 };
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t9, test9)
+void test9() {
+    target = 10;
+    arr = { 10 };
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t10, test10)
+void test10() {
+    target = 10;
+    arr = { 10,10 };
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t11, test11)
+void test11() {
+    target = 10;
+    arr = { 9,5,8,7,6,5 };
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t12, test12)
+void test12() {
+    target = 10;
+    arr = { 9,5,8,5,6,5 };
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t13, test13)
+void test13() {
+    target = 10;
+    arr = { 4,5,5,5,5,5 };
+    expected = true;
+    RUNTEST();
+}
+
 // Main function area
 /*************************************************/
-/* Main function to run tests and print (branch) */ 
+/* Main function to run tests and print (branch) */
 /* coverage and pass rate for executed tests. Do */
 /* not modify this method.                       */
 /*************************************************/
