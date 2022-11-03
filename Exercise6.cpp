@@ -67,6 +67,7 @@ result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TE
             int diffIndex = std::find(elements.begin(), elements.end(), diff) - elements.begin();
             r.first = i;
             r.second = diffIndex;
+            r.possible = true;
             return r;
         } TESTBRANCH
     } TESTBRANCH
@@ -107,7 +108,7 @@ result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TE
 TESTCASE(t1, test1)
 void test1() {
     target = 0;
-    arr = {0,0};
+    arr = {0, 0, 0};
     expected = true;
     RUNTEST();
 }
