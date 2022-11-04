@@ -1,6 +1,6 @@
 #include "Exercise6.h"
  
-// Student name: _____________________
+// Student name: JorNyece Cox
 
 // Exercise directions
 /****************************************************/
@@ -42,7 +42,7 @@ int branchCount = 17;
 
 // Two-sum function using a nested loop
 // Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Runtime (big-O) complexity =  O(n^2)___
 result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
         for (int j = 0; j < elements.size(); j++) { TESTBRANCH
@@ -56,7 +56,7 @@ result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TE
 
 // Two-sum function using a sorted list
 // Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Runtime (big-O) complexity = _O(n^2)__
 result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     std::sort(elements.begin(), elements.end());
     result r = result{};
@@ -75,7 +75,7 @@ result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TE
 
 // Two-sum function using a hash table
 // Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Runtime (big-O) complexity = _O(n)__
 result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     std::unordered_map<int, int> elementMap = std::unordered_map<int, int>(target);
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
@@ -108,6 +108,14 @@ TESTCASE(t1, test1)
 void test1() {
     target = 0;
     arr = {0,0};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t2, test2)
+void test1() {
+    target = 14;
+    arr = {1,4,10,-3};
     expected = true;
     RUNTEST();
 }
