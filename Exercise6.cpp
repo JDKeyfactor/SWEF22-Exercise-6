@@ -1,6 +1,107 @@
-#include "Exercise6.h"
- 
-// Student name: _____________________
+
+
+
+
+#pragma once
+
+/*********************************************/
+/* Definitions and test framework functions. */
+/* DO NOT MODIFY CONTENTS OF THIS FILE.      */
+/* Yes, there's code in a .h file. Sue me.   */
+/*********************************************/
+
+#include <algorithm>
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>
+
+// Return type for two-sum functions
+struct result {
+    bool possible = false;
+    int first = -1;
+    int second = -1;
+};
+
+// Tracking number of branches in code under test
+int branchNum = 0;
+int nBranches;
+char* currentFunction;
+#define TESTBRANCH {currentFunction = (char*)__func__; static int t = -1; if (t < 0) { t = branchNum++; }; paths.push_back(t);}
+
+// Machinery to register test cases and measure results
+std::vector<void (*)()> testCases = std::vector<void (*)()>();
+int registerTest(void func()) { testCases.push_back(func); return 0; }
+#define TESTCASE(name, func) void func(); int name = registerTest(func);
+#define RUNTEST() {runTest(expected, target, arr, (char*)__func__);}
+std::vector<int> paths = std::vector<int>();
+int nPass = 0;
+int nFail = 0;
+
+// Variables to be assigned in a test case. Not thread-safe.
+unsigned int target;
+std::vector<unsigned int> arr;
+bool expected;
+
+// Definitions for the functions to be tested.
+result twoSumNaive(unsigned int target, std::vector<unsigned int> elements);
+result twoSumwSort(unsigned int target, std::vector<unsigned int> elements);
+result twoSumwHash(unsigned int target, std::vector<unsigned int> elements);
+
+// Run provided test function with given arguments and expected output (with result indexes in either order). Track results.
+bool runTest(bool expected, unsigned int target, std::vector<unsigned int> elements, result func(unsigned int, std::vector<unsigned int>), char* testName) {
+    result actual = func(target, elements);
+    if (!actual.possible && !expected) {
+        nPass++;
+        return true;
+    }
+    if (actual.first >= 0 && actual.second >= 0 && actual.possible == expected && elements[actual.first] + elements[actual.second] == target && actual.first != actual.second) {
+        nPass++;
+        return true;
+    }
+    printf("Expected %d but got %d (indexes %d,%d) from %s on %s\n", expected, actual.possible, actual.first, actual.second, currentFunction, testName);
+    nFail++;
+    return false;
+}
+
+// Run tests for all functions with given arguments and expected output.
+void runTest(bool expected, unsigned int target, std::vector<unsigned int> elements, char* testName) {
+    runTest(expected, target, elements, twoSumNaive, testName);
+    runTest(expected, target, elements, twoSumwSort, testName);
+    runTest(expected, target, elements, twoSumwHash, testName);
+}
+
+// Run all registered tests on every version of two-sum
+void runAllTests() {
+    for (int i = 0; i < testCases.size(); i++) {
+        (*testCases[i])();
+    }
+}
+
+// Get the percentage of test cases that passed testing
+float getPassRate() {
+    return (float)nPass / (testCases.size() * 3) * 100;
+}
+
+// Get percentage of branches executed by at least one test
+float getBranchCoverage() {
+    std::sort(paths.begin(), paths.end());
+    std::vector<int>::iterator last = std::unique(paths.begin(), paths.end());
+    paths.resize(std::distance(paths.begin(), last));
+    return (float)paths.size() / nBranches * 100;
+}
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+// Student name: Nicholas Limbach
 
 // Exercise directions
 /****************************************************/
@@ -41,51 +142,70 @@
 int branchCount = 17;
 
 // Two-sum function using a nested loop
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
-result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
-    for (int i = 0; i < elements.size(); i++) { TESTBRANCH
-        for (int j = 0; j < elements.size(); j++) { TESTBRANCH
-            if (elements[i] + elements[j] == target) { TESTBRANCH
-                return result{ true, i, j};
-            } TESTBRANCH
+// Cyclomatic complexity = 4 + 1
+// Runtime (big-O) complexity = N^2
+result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) {
+    TESTBRANCH
+        for (int i = 0; i < elements.size(); i++) {
+            TESTBRANCH
+                for (int j = 0; j < elements.size(); j++) {
+                    TESTBRANCH
+                        if (elements[i] + elements[j] == target && elements[i] != elements[j]) { TESTBRANCH //Added the && statment defination requires I and J to be distinct also added not negative increase cyclic complexity by 1
+                            
+                                return result{ true, i, j };
+                           
+                        } TESTBRANCH
+                } TESTBRANCH
         } TESTBRANCH
-    } TESTBRANCH
-    return result{};
+            return result{};
 }
 
 // Two-sum function using a sorted list
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
-result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
-    std::sort(elements.begin(), elements.end());
+// Cyclomatic complexity = 3 + 2
+// Runtime (big-O) complexity = N
+result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) {
+    TESTBRANCH
+        std::sort(elements.begin(), elements.end());
     result r = result{};
-    for (int i = 0; i < elements.size(); i++) { TESTBRANCH
-        int diff = target - elements[i];
+    for (int i = 0; i < elements.size(); i++) {
+        TESTBRANCH
+            int diff = target - elements[i];
         bool exists = std::binary_search(elements.begin(), elements.end(), diff);
-        if (exists) { TESTBRANCH
-            int diffIndex = std::find(elements.begin(), elements.end(), diff) - elements.begin();
+        if (exists) {
+            TESTBRANCH
+                int diffIndex = std::find(elements.begin(), elements.end(), diff) - elements.begin();
             r.first = i;
             r.second = diffIndex;
+            if (r.first != r.second) // Added this block increasing cyclic complexity by 1 as there are now two conditions
+            {
+                r.possible = true;
+            }
+            else
+            {
+                r.possible = false;
+            }
             return r;
         } TESTBRANCH
     } TESTBRANCH
-    return result{};
+        return result{};
 }
 
 // Two-sum function using a hash table
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
-result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
-    std::unordered_map<int, int> elementMap = std::unordered_map<int, int>(target);
-    for (int i = 0; i < elements.size(); i++) { TESTBRANCH
-        int other = elementMap[target - elements[i]];
-        elementMap[elements[i]] = i+1;
-        if (other > 0 && other != i+1) { TESTBRANCH
-            return result{ true, i, other-1};
+// Cyclomatic complexity = 4
+// Runtime (big-O) complexity = N
+result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) {
+    TESTBRANCH
+        std::unordered_map<int, int> elementMap = std::unordered_map<int, int>(target);
+    for (int i = 0; i < elements.size(); i++) {
+        TESTBRANCH
+            int other = elementMap[target - elements[i]];
+        elementMap[elements[i]] = i + 1;
+        if (other > 0 && other != i + 1) {
+            TESTBRANCH
+                return result{ true, i, other - 1};
         } TESTBRANCH
     } TESTBRANCH
-    return result{};
+        return result{};
 }
 
 // Test case area
@@ -106,15 +226,39 @@ result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TE
 
 TESTCASE(t1, test1)
 void test1() {
+    target = 1;
+    arr = { 1,0 };
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t2, test2)
+void test2() {
+    target = 1;
+    arr = { 0,0 };
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t3, test3)
+void test3() {
     target = 0;
-    arr = {0,0};
+    arr = { 1,0 };
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t4, test4)
+void test4() {
+    target = 1;
+    arr = { 0,1 };
     expected = true;
     RUNTEST();
 }
 
 // Main function area
 /*************************************************/
-/* Main function to run tests and print (branch) */ 
+/* Main function to run tests and print (branch) */
 /* coverage and pass rate for executed tests. Do */
 /* not modify this method.                       */
 /*************************************************/
