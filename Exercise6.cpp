@@ -42,7 +42,7 @@ int branchCount = 17;
 
 // Two-sum function using a nested loop
 // Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Runtime (big-O) complexity = n^2
 result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
         for (int j = 0; j < elements.size(); j++) { TESTBRANCH
