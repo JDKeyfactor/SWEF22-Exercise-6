@@ -75,15 +75,15 @@ result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TE
 }
 
 // Two-sum function using a hash table
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Cyclomatic complexity = 2
+// Runtime (big-O) complexity = n
 result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     std::unordered_map<int, int> elementMap = std::unordered_map<int, int>(target);
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
         int other = elementMap[target - elements[i]];
-        elementMap[elements[i]] = i+1;
-        if (other > 0 && other != i+1) { TESTBRANCH
-            return result{ true, i, other-1};
+        elementMap[elements[i]] = i + 1;
+        if (other > 0 && other != i + 1) { TESTBRANCH
+            return result{ true, i, other - 1};
         } TESTBRANCH
     } TESTBRANCH
     return result{};
