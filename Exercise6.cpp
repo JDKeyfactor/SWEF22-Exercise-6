@@ -1,6 +1,6 @@
 #include "Exercise6.h"
  
-// Student name: _____________________
+// Student name: Andy Mee (atm112)
 
 // Exercise directions
 /****************************************************/
