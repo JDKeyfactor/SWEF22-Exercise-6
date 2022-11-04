@@ -112,6 +112,38 @@ void test1() {
     RUNTEST();
 }
 
+TESTCASE(t2, test2)
+void test2() {
+    target = 0;
+    arr = {1,2};
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t3, test3)
+void test3() {
+    target = 7;
+    arr = {1,2,3,4,5};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t4, test4)
+void test4() {
+    target = 10;
+    arr = {1,2,3,4,5};
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t5, test5)
+void test5() {
+    target = 18;
+    arr = {1,3,5,7,9,11};
+    expected = true;
+    RUNTEST();
+}
+
 // Main function area
 /*************************************************/
 /* Main function to run tests and print (branch) */ 
