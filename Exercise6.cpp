@@ -1,6 +1,7 @@
 #include "Exercise6.h"
+#include <iostream>
  
-// Student name: _____________________
+// Student name: Anthony Lupica
 
 // Exercise directions
 /****************************************************/
@@ -38,53 +39,108 @@
 /* match the number of TESTBRANCH statements.    */
 /*************************************************/
 
-int branchCount = 17;
+int branchCount = 19;
 
 // Two-sum function using a nested loop
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
-result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
-    for (int i = 0; i < elements.size(); i++) { TESTBRANCH
-        for (int j = 0; j < elements.size(); j++) { TESTBRANCH
-            if (elements[i] + elements[j] == target) { TESTBRANCH
-                return result{ true, i, j};
+// Cyclomatic complexity = 5
+// Runtime (big-O) complexity = O(N^2)
+result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) 
+{ TESTBRANCH
+
+    for (int i = 0; i < elements.size(); i++) 
+    { TESTBRANCH 
+        
+        for (int j = 0; j < elements.size(); j++) 
+        { TESTBRANCH 
+
+            /* return true when elements[i] + elements[j] == target iff . . .
+
+                * i != j "No comparing an element against itself" 
+            */
+            if ((i != j) && (elements[i] + elements[j] == target))
+            { TESTBRANCH
+    
+                return result{ true, i, j };
+
             } TESTBRANCH
         } TESTBRANCH
     } TESTBRANCH
+    
     return result{};
 }
 
 // Two-sum function using a sorted list
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
-result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
+// Cyclomatic complexity = 3
+// Runtime (big-O) complexity = O(N)
+result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) 
+{ TESTBRANCH
+
     std::sort(elements.begin(), elements.end());
     result r = result{};
-    for (int i = 0; i < elements.size(); i++) { TESTBRANCH
+    
+    for (int i = 0; i < elements.size(); i++) 
+    { TESTBRANCH
+        
+        // diff is the number that must be found elsewhere in the array to complete the equivalence
+        // elements[i] + diff = target, for some index i
         int diff = target - elements[i];
+        
+        // set elements[i] to sentinel value -99 and store a copy
+        int tempVal = elements[i];
+        elements[i] = -99;
         bool exists = std::binary_search(elements.begin(), elements.end(), diff);
-        if (exists) { TESTBRANCH
-            int diffIndex = std::find(elements.begin(), elements.end(), diff) - elements.begin();
-            r.first = i;
-            r.second = diffIndex;
-            return r;
+        
+        // block only entered if the corresponding diff exists for elements[i]
+        std::vector<unsigned int>::iterator diffItr;
+
+        if (exists) 
+        { TESTBRANCH
+            
+            diffItr = std::find(elements.begin(), elements.end(), diff);
+
+            if (diffItr != elements.end())
+            { TESTBRANCH
+                
+                int diffIndex = std::distance(elements.begin(), diffItr);
+
+                r.first = i;
+                r.second = diffIndex;
+                r.possible = true;
+
+                return r;
+
+            } TESTBRANCH
         } TESTBRANCH
+
+        // restore elements[i]
+        elements[i] = tempVal;
+
     } TESTBRANCH
+    
     return result{};
 }
 
 // Two-sum function using a hash table
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
-result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
+// Cyclomatic complexity = 4
+// Runtime (big-O) complexity = O(N)
+result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) 
+{ TESTBRANCH
+
     std::unordered_map<int, int> elementMap = std::unordered_map<int, int>(target);
-    for (int i = 0; i < elements.size(); i++) { TESTBRANCH
+    
+    for (int i = 0; i < elements.size(); i++) 
+    { TESTBRANCH
+
         int other = elementMap[target - elements[i]];
         elementMap[elements[i]] = i+1;
-        if (other > 0 && other != i+1) { TESTBRANCH
+        if (other > 0 && other != i+1) 
+        { TESTBRANCH
+
             return result{ true, i, other-1};
+
         } TESTBRANCH
     } TESTBRANCH
+
     return result{};
 }
 
@@ -104,13 +160,61 @@ result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TE
 /* case.                                            */
 /****************************************************/
 
+
 TESTCASE(t1, test1)
-void test1() {
+void test1() 
+{
     target = 0;
-    arr = {0,0};
+    arr = {0, 0};
+    expected = true;
+    RUNTEST();
+} 
+
+TESTCASE(t2, test2)
+void test2() 
+{
+    target = 4;
+    arr = {2, 1, 3};
     expected = true;
     RUNTEST();
 }
+
+TESTCASE(t3, test3)
+void test3() 
+{
+    target = 4;
+    arr = {2, 1, 1};
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t4, test4)
+void test4() 
+{
+    target = 6;
+    arr = {3, 2, 3};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t5, test5)
+void test5() 
+{
+    target = 6;
+    arr = {1, 2, 3, 4, 5};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t6, test6)
+void test6() 
+{
+    target = 10;
+    arr = {1, 2, 3, 4, 5};
+    expected = false;
+    RUNTEST();
+}
+
 
 // Main function area
 /*************************************************/
@@ -123,6 +227,6 @@ int main()
 {
     nBranches = branchCount;
     runAllTests();
-    std::cout << "Pass rate: " << getPassRate() << "%\n";
+    std::cout << "\nPass rate: " << getPassRate() << "%\n";
     std::cout << "Coverage: " << getBranchCoverage() << "%\n";
 }
