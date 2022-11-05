@@ -41,12 +41,12 @@
 int branchCount = 17;
 
 // Two-sum function using a nested loop
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = n^2
+// Cyclomatic complexity = 3
+// Runtime (big-O) complexity = O(n^2) (nested for loop)
 result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
         for (int j = 0; j < elements.size(); j++) { TESTBRANCH
-            if (elements[i] + elements[j] == target) { TESTBRANCH
+            if (elements[i] + elements[j] == target && i != j) { TESTBRANCH
                 return result{ true, i, j};
             } TESTBRANCH
         } TESTBRANCH
@@ -55,8 +55,8 @@ result twoSumNaive(unsigned int target, std::vector<unsigned int> elements) { TE
 }
 
 // Two-sum function using a sorted list
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Cyclomatic complexity = 2
+// Runtime (big-O) complexity = O(log(N)) (binary search)
 result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     std::sort(elements.begin(), elements.end());
     result r = result{};
@@ -65,17 +65,20 @@ result twoSumwSort(unsigned int target, std::vector<unsigned int> elements) { TE
         bool exists = std::binary_search(elements.begin(), elements.end(), diff);
         if (exists) { TESTBRANCH
             int diffIndex = std::find(elements.begin(), elements.end(), diff) - elements.begin();
+            if (diffIndex != i){
+            r.possible = true;
             r.first = i;
             r.second = diffIndex;
             return r;
+            }
         } TESTBRANCH
     } TESTBRANCH
     return result{};
 }
 
 // Two-sum function using a hash table
-// Cyclomatic complexity = ___
-// Runtime (big-O) complexity = ___
+// Cyclomatic complexity = 2
+// Runtime (big-O) complexity = O(N) (for loop)
 result twoSumwHash(unsigned int target, std::vector<unsigned int> elements) { TESTBRANCH
     std::unordered_map<int, int> elementMap = std::unordered_map<int, int>(target);
     for (int i = 0; i < elements.size(); i++) { TESTBRANCH
@@ -111,6 +114,55 @@ void test1() {
     expected = true;
     RUNTEST();
 }
+
+TESTCASE(t2, test2)
+void test2(){
+    target = 6;
+    arr = {2,5};
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t3, test3)
+void test3(){
+    target = 10;
+    arr = {3,5,4,7};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t4, test4)
+void test4(){
+    target = 12;
+    arr = {1,2,5,6,7,8};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t5, test5)
+void test5(){
+    target = 15;
+    arr = {10,4,8,6,2,3,2,2,2};
+    expected = false;
+    RUNTEST();
+}
+
+TESTCASE(t6, test6)
+void test6(){
+    target = 1;
+    arr = {1,0,5,7,9,3,2};
+    expected = true;
+    RUNTEST();
+}
+
+TESTCASE(t7, test7)
+void test7(){
+    target = 17;
+    arr = {1,0,5,8,9,3,8};
+    expected = true;
+    RUNTEST();
+}
+
 
 // Main function area
 /*************************************************/
